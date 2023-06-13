@@ -1,12 +1,12 @@
 package commands
 
 import (
-	"github.com/baulos-io/baulos/src/engine"
+	"github.com/zen-io/zen-engine/engine"
 
 	"github.com/spf13/cobra"
 )
 
-var deployCmd = &AhoyCommand{
+var deployCmd = &ZenCommand{
 	Pre:  nil,
 	Post: nil,
 	Command: func(eng *engine.Engine) *cobra.Command {

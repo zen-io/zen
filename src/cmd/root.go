@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/baulos-io/baulos/src/commands"
-	"github.com/baulos-io/baulos/src/engine"
+	"github.com/zen-io/zen-engine/engine"
+	"github.com/zen-io/zen/src/commands"
 )
 
 var eng *engine.Engine
@@ -49,22 +49,31 @@ func init() {
 	rootCmd.AddCommand(completionCmd)
 	rootCmd.AddCommand(loginCmd)
 
-	fns := map[string]*engine.RunFnMap{}
 	for _, cmd := range commands.ExportedCommands {
-		resolvedCmd := cmd.Command(eng)
-		rootCmd.AddCommand(resolvedCmd)
-		fns[resolvedCmd.Name()] = &engine.RunFnMap{
-			Pre:  cmd.Pre,
-			Post: cmd.Post,
-		}
+		resolveCommand(rootCmd, cmd, eng)
 	}
 
-	eng.RegisterCommandFunctions(fns)
+}
+
+func resolveCommand(root *cobra.Command, cmd *commands.ZenCommand, eng *engine.Engine) {
+	resolvedCmd := cmd.Command(eng)
+
+	for _, sub := range cmd.SubCommands {
+		resolveCommand(resolvedCmd, sub, eng)
+	}
+
+	root.AddCommand(resolvedCmd)
+	eng.RegisterCommandFunctions(map[string]*engine.RunFnMap{
+		resolvedCmd.Name(): {
+			Pre:  cmd.Pre,
+			Post: cmd.Post,
+		},
+	})
 }
 
 var rootCmd = &cobra.Command{
-	Use:          "baulos",
-	Short:        "Ahoy is a build and deploy system",
+	Use:          "zen",
+	Short:        "Zen is a build and deploy system",
 	Long:         `A fast, iterative build and deploy system`,
 	SilenceUsage: true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {

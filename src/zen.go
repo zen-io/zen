@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/baulos-io/baulos/src/cmd"
+	"github.com/zen-io/zen/src/cmd"
 )
 
 func main() {

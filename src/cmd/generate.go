@@ -5,9 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/baulos-io/baulos/src/generator"
-
 	"github.com/spf13/cobra"
+	"github.com/zen-io/zen-engine/generator"
 )
 
 var newTargetCmd = &cobra.Command{

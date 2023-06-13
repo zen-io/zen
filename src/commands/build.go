@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/baulos-io/baulos/src/cache"
-	"github.com/baulos-io/baulosne"
-
-	"github.com/baulos-io/bauloset"
+	"github.com/zen-io/zen-core/target"
+	"github.com/zen-io/zen-engine/cache"
+	"github.com/zen-io/zen-engine/engine"
 
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slices"
 )
 
-var buildCmd = &AhoyCommand{
+var buildCmd = &ZenCommand{
 	Pre:  preBuild,
 	Post: postBuild,
 	Command: func(eng *engine.Engine) *cobra.Command {

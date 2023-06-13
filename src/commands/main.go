@@ -1,19 +1,20 @@
 package commands
 
 import (
-	"github.com/baulos-io/baulos/src/cache"
-	"github.com/baulos-io/baulosne"
-	"github.com/baulos-io/bauloset"
+	"github.com/zen-io/zen-core/target"
+	"github.com/zen-io/zen-engine/cache"
+	"github.com/zen-io/zen-engine/engine"
 
 	"github.com/spf13/cobra"
 )
 
-type AhoyCommand struct {
-	Pre     func(eng *engine.Engine, target *target.Target, ci *cache.CacheItem) error
-	Post    func(eng *engine.Engine, target *target.Target, ci *cache.CacheItem) error
-	Command func(eng *engine.Engine) *cobra.Command
+type ZenCommand struct {
+	Pre         func(eng *engine.Engine, target *target.Target, ci *cache.CacheItem) error
+	Post        func(eng *engine.Engine, target *target.Target, ci *cache.CacheItem) error
+	Command     func(eng *engine.Engine) *cobra.Command
+	SubCommands []*ZenCommand
 }
 
-var ExportedCommands = []*AhoyCommand{
-	deployCmd, buildCmd, cleanCmd, removeCmd, runCmd,
+var ExportedCommands = []*ZenCommand{
+	deployCmd, buildCmd, cleanCmd, removeCmd, runCmd, queryCmd,
 }
