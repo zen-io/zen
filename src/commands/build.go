@@ -60,6 +60,7 @@ var preBuild = func(eng *engine.Engine, target *target.Target, ci *cache.CacheIt
 		}
 	}
 	target.Cwd = ci.BuildCachePath()
+	target.Env["PWD"] = target.Cwd
 
 	if err := ci.DeleteCache(); err != nil {
 		return fmt.Errorf("refreshing cache directory: %w", err)
