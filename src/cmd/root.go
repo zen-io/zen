@@ -52,7 +52,6 @@ func init() {
 	for _, cmd := range commands.ExportedCommands {
 		resolveCommand(rootCmd, cmd, eng)
 	}
-
 }
 
 func resolveCommand(root *cobra.Command, cmd *commands.ZenCommand, eng *engine.Engine) {

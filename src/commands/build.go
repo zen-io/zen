@@ -23,7 +23,7 @@ var buildCmd = &ZenCommand{
 			Args:              cobra.MinimumNArgs(1),
 			ValidArgsFunction: eng.AutocompleteTargets,
 			Run: func(cmd *cobra.Command, args []string) {
-				eng.CheckShellAndRun(cmd.Flags(), args, "build")
+				eng.ParseArgsAndRun(cmd.Flags(), args, "build")
 			},
 		}
 
@@ -34,7 +34,7 @@ var buildCmd = &ZenCommand{
 var preBuild = func(eng *engine.Engine, target *target.Target, ci *cache.CacheItem) error {
 	target.SetStatus("Building %s", target.Qn())
 
-	if err := target.ExpandTools(eng.Cache.TargetOuts); err != nil {
+	if err := target.ExpandTools(eng.Projects[target.Project()].Cache.TargetOuts); err != nil {
 		return fmt.Errorf("expanding tools: %w", err)
 	}
 
@@ -42,7 +42,7 @@ var preBuild = func(eng *engine.Engine, target *target.Target, ci *cache.CacheIt
 		return fmt.Errorf("interpolating myself: %w", err)
 	}
 
-	if !target.ShouldClean() && ci.CheckCacheHits() {
+	if !target.Clean && ci.CheckCacheHits() {
 		if err := ci.ExpandOuts(target.Outs); err != nil {
 			if !os.IsNotExist(err) {
 				return fmt.Errorf("expanding outs: %w", err)

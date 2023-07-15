@@ -17,7 +17,7 @@ var runCmd = &ZenCommand{
 			Args:              cobra.MinimumNArgs(1),
 			ValidArgsFunction: eng.AutocompleteTargets,
 			Run: func(cmd *cobra.Command, args []string) {
-				eng.CheckShellAndRun(cmd.Flags(), args, "")
+				eng.ParseArgsAndRun(cmd.Flags(), args, "")
 			},
 		}
 

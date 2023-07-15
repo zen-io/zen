@@ -15,9 +15,9 @@ var newTargetCmd = &cobra.Command{
 	Long:  `Generate a target of name 'name' in the provided package`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		// _, _ := cmd.Flags().GetString("name")
+		proj, _ := cmd.Flags().GetString("project")
 		t, _ := cmd.Flags().GetString("type")
-		generator.GenerateTarget(t, eng.PackageParser.KnownTypes()[t])
+		generator.GenerateTarget(t, eng.PackageParser.KnownTypes(proj)[t])
 		// return eng.BuildGraphAndRun(args, "pkg")
 	},
 }
@@ -31,14 +31,14 @@ var newPkgCmd = &cobra.Command{
 		pkgPath, _ := cmd.Flags().GetString("path")
 		project, _ := cmd.Flags().GetString("project")
 
-		if !eng.PackageParser.IsProjectConfigured(project) {
+		if eng.Projects[project] == nil {
 			eng.Errorln("Project %s is not configured", project)
 			return
 		}
 		path := filepath.Join(
-			eng.PackageParser.ProjectPath(project),
+			eng.Projects[project].Path,
 			pkgPath,
-			eng.PackageParser.ProjectFilename(project),
+			eng.Projects[project].Config.Parse.Filename,
 		)
 
 		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
