@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/zen-io/zen-core/target"
 	"github.com/zen-io/zen-engine/engine"
 	"github.com/zen-io/zen/src/commands"
 )
@@ -26,6 +27,7 @@ func init() {
 	rootCmd.PersistentFlags().Bool("shell", false, "Enter a shell instead of executing")
 	rootCmd.PersistentFlags().Bool("raw-output", false, "Enable raw output, disabling tty")
 	rootCmd.PersistentFlags().Bool("keep-output", false, "Keep the output of finished tasks")
+	rootCmd.PersistentFlags().Bool("no-deps", false, "Dont add runtime dependencies")
 
 	newTargetCmd.Flags().StringP("name", "n", "", "Name for the target")
 	newTargetCmd.MarkFlagRequired("name")
@@ -79,8 +81,8 @@ var rootCmd = &cobra.Command{
 		if cmd.Name() == "debug" {
 			cmd.Flags().Set("raw-output", "true")
 		}
-		eng.Initialize(cmd.Flags())
-		return nil
+
+		return eng.Initialize(cmd.Flags(), target.NewRuntimeContext(cmd.Flags()))
 	},
 	PersistentPostRunE: func(cmd *cobra.Command, args []string) error {
 		eng.Done()

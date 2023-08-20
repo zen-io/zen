@@ -15,9 +15,9 @@ var newTargetCmd = &cobra.Command{
 	Long:  `Generate a target of name 'name' in the provided package`,
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		proj, _ := cmd.Flags().GetString("project")
-		t, _ := cmd.Flags().GetString("type")
-		generator.GenerateTarget(t, eng.PackageParser.KnownTypes(proj)[t])
+		// proj, _ := cmd.Flags().GetString("project")
+		// t, _ := cmd.Flags().GetString("type")
+		// generator.GenerateTarget(t, eng.PackageParser.KnownTypes(proj)[t])
 		// return eng.BuildGraphAndRun(args, "pkg")
 	},
 }

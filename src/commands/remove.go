@@ -16,6 +16,9 @@ var removeCmd = &ZenCommand{
 			Long:              `Build and deploy a list of packages and their dependencies`,
 			Args:              cobra.MinimumNArgs(1),
 			ValidArgsFunction: eng.AutocompleteTargets,
+			PreRun: func(cmd *cobra.Command, args []string) {
+				eng.Ctx.UseEnvironments = true
+			},
 			Run: func(cmd *cobra.Command, args []string) {
 				eng.ParseArgsAndRun(cmd.Flags(), args, "remove")
 			},
